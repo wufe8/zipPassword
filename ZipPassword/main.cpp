@@ -11,12 +11,15 @@ int main()
 	int mode = 1;
 	while (mode)
 	{
+		cout << endl << "enter char part: ";
 		cin >> mode;
+		system("cls");
 		if (mode)
 		{
 			test.SetMode(mode);
 			test.CalcMode();
 			test.PrintPart();
+			test.PrintChar();
 		}
 	}
 	test.GuessPW();

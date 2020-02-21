@@ -2,7 +2,8 @@
 #include <iostream>
 
 password::password(int mode) :
-	mode(mode), guess{ 48, 48, 48, 48 }, part{ 32, 127, 0, 0, 0, 0 }
+	mode(mode), guess{ 48, 48, 48, 48 },
+	part{ 32, 127, 0, 0, 0, 0 }, len{ PASSWORD_LEIGHT_MIN, PASSWORD_LEIGHT_MAX }
 {
 	std::cout << "class has been create!" << std::endl;
 }
@@ -121,61 +122,61 @@ int password::CalcMode()
 	return 0;
 }
 
-int password::GuessPW()
+int password::PrintChar()
 {
-	GuessPW(0); //recursive
+	std::cout << std::endl;
+	for (int Ppart = 0; Ppart < PASSWORD_TYPE && part[Ppart]; Ppart += 2)
+	{
+		std::cout << part[Ppart] << " ";
+		for (int i = part[Ppart]; i < part[Ppart + 1] - 5; i++)
+		{
+			std::cout << " ";
+		}
+		std::cout << part[Ppart + 1] << " ";
+	}
+	std::cout << std::endl;
+	for (int Ppart = 0; Ppart < PASSWORD_TYPE && part[Ppart]; Ppart += 2)
+	{
+		for (int i = part[Ppart]; i < part[Ppart + 1]; i++)
+		{
+			std::cout << char(i);
+		}
+		std::cout << " ";
+	}
+	std::cout << std::endl;
 	return 0;
 }
 
-int password::GuessPW(int site)
+int password::GuessPW()
 {
-	if (site == PASSWORD_LEIGHT)
+	for (int passwordLen = PASSWORD_LEIGHT_MIN; passwordLen < PASSWORD_LEIGHT_MAX; passwordLen++)
 	{
-		return 0;
+		GuessPW(0, passwordLen); //recursive
 	}
-	for (guess[site] = part[0]; guess[site] < part[1]; guess[site]++)
+	return 0;
+}
+
+int password::GuessPW(int site, int len)
+{
+	int Ppart = 0;
+	for (int Ppart = 0; Ppart < PASSWORD_TYPE && part[Ppart]; Ppart += 2) //check part[0/2/4/6] is 0
 	{
-		GuessPW(site + 1);
-		for (int i = 0; i < PASSWORD_LEIGHT; i++)
+		for (guess[site] = part[Ppart]; guess[site] < part[Ppart + 1]; guess[site]++)
 		{
-			std::cout << guess[i];
-		}
-		std::cout << std::endl;
-	}
-	if (part[2])
-	{
-		for (guess[site] = part[2]; guess[site] < part[3]; guess[site]++)
-		{
-			GuessPW(site + 1);
-			for (int i = 0; i < PASSWORD_LEIGHT; i++)
+			if (site == len)
 			{
-				std::cout << guess[i];
+				return 0;
 			}
-			std::cout << std::endl;
-		}
-	}
-	if (part[4])
-	{
-		for (guess[site] = part[4]; guess[site] < part[5]; guess[site]++)
-		{
-			GuessPW(site + 1);
-			for (int i = 0; i < PASSWORD_LEIGHT; i++)
+			else
 			{
-				std::cout << guess[i];
+				GuessPW(site + 1, len);
 			}
-			std::cout << std::endl;
-		}
-	}
-	if (part[6])
-	{
-		for (guess[site] = part[6]; guess[site] < part[7]; guess[site]++)
-		{
-			GuessPW(site + 1);
-			for (int i = 0; i < PASSWORD_LEIGHT; i++)
+			std::cout << "now: ";
+			for (int i = 0; i < len; i++)
 			{
-				std::cout << guess[i];
+				std::cout << guess[i]; //down-top
 			}
-			std::cout << std::endl;
+			system("cls");
 		}
 	}
 	return 0;

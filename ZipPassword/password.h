@@ -4,7 +4,7 @@
 
 //get size of char
 #define CHAR_SPACE(begin, end) begin = 32; end = 33
-#define CHAR_NUMBER(begin, end) begin = 48; end = 57
+#define CHAR_NUMBER(begin, end) begin = 48; end = 58
 #define CHAR_HIGHER_ALPHA(begin, end) begin = 65; end = 91
 #define CHAR_LOWER_ALPHA(begin, end) begin = 97; end = 123
 #define CHAR_ALL(begin, end) begin = 32; end = 127
@@ -48,20 +48,23 @@ base type:|     1      |      2      |   4    |   8   |    16     |
 //the number of char type
 #define PASSWORD_TYPE 8
 //the complexity of password
-#define PASSWORD_LEIGHT 4
+#define PASSWORD_LEIGHT_MIN 1
+#define PASSWORD_LEIGHT_MAX 5
 
 class password
 {
 private:
 	int mode;
 	int part[PASSWORD_TYPE];  //single with loop begin, double with loop end
-	char guess[PASSWORD_LEIGHT];
-	int GuessPW(int site);
+	char guess[PASSWORD_LEIGHT_MAX];
+	int len[2];
+	int GuessPW(int site, int len);
 public:
 	int SetMode(int mode);
 	int GetMode();
 	int PrintPart();
 	int CalcMode();
+	int PrintChar();
 	int GuessPW();
 	password(int mode);
 	~password();
